@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="assets/favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" href="styles/owfont-regular.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+
+    <title> Momentum </title>
+
+    <script defer type="module" src="js/index.js"></script>
+
+</head>
+
+<body class="page">
+
+    <!-- Header -->
+
+    <header class="header">
+
+        <!-- Player -->
+
+        <div class="player">
+            <div class="player-controls">
+                <button class="play-prev player-icon"></button>
+                <button class="play player-icon"></button>
+                <button class="play-next player-icon"></button>
+
+                <div class="volume-container">
+                    <button class="volume player-icon"></button>
+                    <input class="volume-range" type="range" min="0" max="1" step="0.01" value="0.2">
+                </div>
+            </div>
+
+            <div class="progress-bar-container">
+                <label for="progress-bar" class="audio-title"> </label>
+                <div class="progress-time">
+                    <div class="current-time">00:00</div>
+                    <div class="progress-bar">
+                        <input type="range" id="progressBar" class="progress" min="0" max="" value="0">
+                        <!-- <progress id="progress" class="progress" max="100" value="0"></progress> -->
+                    </div>
+                    <div class="track-duration">00:00</div>
+                </div>
+            </div>
+
+            <ul class="play-list"></ul>
+        </div>
+
+        <!-- Weather -->
+
+        <div class="weather">
+            <input type="text" class="city" placeholder="[Enter city]">
+            <div class="weather-error"></div>
+            <div class="weather__container">
+                <span class="temperature"></span>
+                <span class="weather-icon owf"></span>
+                <span class="description-container">
+                    <div class="weather-description"></div>
+                    <div class="feels-like"></div>
+                </span>
+            </div>
+            <div class="wind"></div>
+            <div class="humidity"></div>
+            <!-- <div class="sun">
+                <span class="sunrise"></span>
+                <span class="sunset"></span>
+            </div> -->
+        </div>
+
+    </header>
+
+    <!-- Main -->
+
+    <main class="main">
+
+        <div class="slider-icons">
+            <button class="slide-prev slider-icon"></button>
+            <button class="slide-next slider-icon"></button>
+        </div>
+
+        <time class="time"></time>
+        <date class="date"></date>
+
+        <div class="greeting-container">
+            <span class="greeting"></span>
+            <input type="text" class="enter-name">
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <div class="helper">
+
+            <!-- Settings -->
+
+            <div class="settings">
+                <button class="settings__btn btn"></button>
+
+                <div class="popup settings__popup hidden">
+
+                    <div class="popup__container settings__container">
+
+                        <div class="settings__lang">
+                            <h2 class="settings__title"> App language </h2>
+                            <input type="radio" checked id="lang-en" name="lang" value="en">
+                            <label for="lang-en" class="label__title"> en </label>
+
+                            <input type="radio" id="lang-ua" name="lang" value="ua">
+                            <label for="lang-ua" class="label__title"> ua </label>
+                        </div>
+
+                        <div class="settings__background">
+                            <h2 class="settings__title"> Background Source </h2>
+                            <div class="bg">
+                                <input type="radio" checked id="bg-github" name="bg" value="github">
+                                <label for="bg-github" class="label__title"> GitHub collection </label>
+                            </div>
+                            <div class="bg">
+                                <input type="radio" id="bg-unsplash" name="bg" value="unsplash">
+                                <label for="bg-unsplash" class="label__title"> Unsplash API </label>
+                            </div>
+                            <div class="bg">
+                                <input type="radio" id="bg-flickr" name="bg" value="flickr">
+                                <label for="bg-flickr" class="label__title"> Flickr API </label>
+                            </div>
+                            <div class="tags">
+                                <label for="tag" class="tags__title"> Tag: </label>
+                                <input type="text" id="tag" class="tag" placeholder="Enter tags" />
+                            </div>
+
+                        </div>
+
+                        <!-- blocks-display -->
+
+                        <div class="blocks-display">
+                            <h2 class="blocks-display__title settings__title"> Widgets </h2>
+
+                            <div class="block block-player">
+                                <input type="checkbox" checked id="player" name="player"
+                                    class="checkbox checkbox-player">
+                                <label for="player" class="block__title label-player" id="label-player"> Music player
+                                </label>
+                            </div>
+
+                            <div class="block">
+                                <input type="checkbox" checked id="weather" name="weather"
+                                    class="checkbox checkbox-weather">
+                                <label for="weather" class="block__title label-weather" id="label-weather"> Weather
+                                </label>
+                            </div>
+
+                            <div class="block">
+                                <input type="checkbox" checked id="time" name="time" class="checkbox checkbox-time">
+                                <label for="time" class="block__title label-time" id="label-time"> Time </label>
+                            </div>
+
+                            <div class="block">
+                                <input type="checkbox" checked id="date" name="date" class="checkbox checkbox-date">
+                                <label for="date" class="block__title label-date" id="label-date"> Date </label>
+                            </div>
+
+                            <div class="block">
+                                <input type="checkbox" checked id="greeting" name="greeting"
+                                    class="checkbox checkbox-greeting">
+                                <label for="greeting" class="block__title label-greeting" id="label-greeting"> Greeting
+                                </label>
+                            </div>
+
+                            <div class="block">
+                                <input type="checkbox" checked id="quote" name="quote" class="checkbox checkbox-quote">
+                                <label for="quote" class="block__title label-quote" id="label-quote"> Quotes </label>
+                            </div>
+
+                            <div class="block">
+                                <input type="checkbox" checked id="to-do-list" name="to-do-list"
+                                    class="checkbox checkbox-to-do-list">
+                                <label for="to-do-list" class="block__title label-to-do-list" id="label-to-do-list">
+                                    ToDo list </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Todo -->
+
+            <div class="to-do">
+                <button class="btn__to-do btn">
+                    <span> ✓___ </span>
+                    <span> ✓___ </span>
+                </button>
+                <div class="popup to-do__popup hidden">
+                    <div class="to-do__container">
+                        <h2 class="to-do__list__title"> ToDo List </h2>
+                        <div class="to-do__input__container">
+                            <input class="to-do__input" type="text">
+                            <button class="to-do__btn-add btn"> + </button>
+                        </div>
+                        <ol class="to-do__list"></ol>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Quote -->
+
+        <div class="footer__quote">
+            <button class="change-quote"></button>
+            <div>
+                <div class="quote"></div>
+                <div class="author"></div>
+            </div>
+        </div>
+
+
+        <!-- Links -->
+
+        <div class="links">
+            <span class="my-github">
+                <a class="link my-github__link" href="https://github.com/IuliiaPi" target="_blank">
+                    <img class="my-github__img" src="./assets/svg/github.png" alt="my-github" width="20"
+                        height="20" /></a>
+            </span>
+            <span class="rs-school">
+                <a class="link rs-school__link" href="https://rs.school/js/" target="_blank">
+                    <img class="rs-school__img" src="https://rs.school/images/rs_school_js.svg" alt="rs-school"
+                        width="50" height="20" /></a>
+            </span>
+            <div class="copyright">&copy; 2023 </div>
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
