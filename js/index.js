@@ -452,6 +452,8 @@ toDoBtnAdd.addEventListener('click', () => {
     toDoList.append(li);
 });
 
+// toDoInput.placeholder = 'add your new task';
+
 function setLocalStorageToDo() {
     localStorage.setItem('to-do__input', toDoInput.value);
 }
