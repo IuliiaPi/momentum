@@ -308,13 +308,14 @@
 }
 
 .weather-error {
-  margin-top: -20px;
   font-size: 18px;
   font-style: italic;
   color: rgb(231, 65, 65);
 }
 
 .weather__container {
+  margin-top: -20px;
+
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -351,12 +352,15 @@
   height: 34px;
   padding: 5px;
 
-  /* font-family: 'Courier New', Courier, monospace; */
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 30px;
+  /* font-style: italic; */
+  font-weight: lighter;
+  color: rgb(209, 233, 247);
+
   line-height: 24px;
-  color: #fff;
-  opacity: .6;
+  /* letter-spacing: 1.3px; */
+  /* color: #fff; */
+  /* opacity: .6; */
   border: 0;
   outline: 0;
   border-bottom: 1px solid #fff;
