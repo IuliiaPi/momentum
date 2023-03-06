@@ -6,7 +6,7 @@ const langUa = document.querySelector('#lang-ua');
 // greeting 
 
 const time = document.querySelector('.time');
-const day = document.querySelector('.date');
+const day = document.querySelector('.day');
 const greeting = document.querySelector('.greeting');
 let timeOfDay;
 
@@ -166,87 +166,90 @@ btnChangeQuote.addEventListener("click", getQuotes);
 
 // get Weather  ---------------------------------------------------------------
 
-const weather = document.querySelector('.weather');
-const weatherIcon = document.querySelector('.weather-icon');
-const temperature = document.querySelector('.temperature');
-const weatherDescription = document.querySelector('.weather-description');
-const feelsLike = document.querySelector('.feels-like');
-const wind = document.querySelector('.wind');
-const humidity = document.querySelector('.humidity');
-const sunrise = document.querySelector('.sunrise');
-const sunset = document.querySelector('.sunset');
+const weatherBlock = document.querySelector('#weather');
+const weatherIcon = document.querySelector('.weather__icon');
+const weatherIconImg = document.querySelector('.weather__icon-img');
+const temperature = document.querySelector('.weather__temp');
+const weatherDescription = document.querySelector('.weather__description');
+const feelsLike = document.querySelector('.weather__feels-like');
+const wind = document.querySelector('.weather__wind');
+const humidity = document.querySelector('.weather__humidity');
 
-const city = document.querySelector('.city');
+const city = document.querySelector('.weather__city');
 const weatherError = document.querySelector('.weather-error');
+
 city.value = 'Kyiv';
 const lang = 'en';
 const unitsMetric = 'metric';
 const unitsImperial = 'imperial';
 
-// get Weather [Enter city]
-
-function setLocalStorageCity() {
-    localStorage.setItem('city', city.value);
-}
-window.addEventListener('beforeunload', setLocalStorageCity);
-
-function getLocalStorageCity() {
-    if (localStorage.getItem('city')) {
-        city.value = localStorage.getItem('city');
-    }
-}
-window.addEventListener('load', getLocalStorageCity);
-
-// async function getWeather(xCity) {
 //     const url = 'https://api.openweathermap.org/data/2.5/weather?lang=en&appid=3ee4bd2dcd7dece6e7e79f8f64042146&units=metric';
 //     const res = await fetch(url + '&q=' + xCity);
 
-async function getWeather() {
+async function loadWeather(e) {
 
-    // if (city.value === '') {
-    //     city.value = 'Kyiv';
-    // };
+    const server = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${lang}&appid=3ee4bd2dcd7dece6e7e79f8f64042146&units=${unitsMetric}`;
+    const response = await fetch(server, {
+        method: 'GET',
+    });
+    const responseResult = await response.json();
+    // console.log(responseResult);
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${lang}&appid=3ee4bd2dcd7dece6e7e79f8f64042146&units=${unitsMetric}`;
-    const res = await fetch(url);
+    if (response.ok) {
+        weatherError.textContent = '';
+        getWeather(responseResult);
 
-    if (res.status === 404 || city.value === '') {
+    } else {
         weatherError.textContent = 'Enter correct city!';
+        // if (res.status === 404 || city.value === '') {} 
         temperature.textContent = ``;
+        weatherIcon.classList.add('hidden');
         weatherDescription.textContent = '';
         feelsLike.textContent = '';
         wind.textContent = ``;
         humidity.textContent = ``;
-    } else {
-        weatherError.textContent = '';
     }
 
-    const data = await res.json();
+}
 
-    weatherIcon.className = 'weather-icon owf';
+function getWeather(data) {
+    // console.log(data);
+    weatherIcon.className = 'weather__icon owf';
     weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+    // or 
+    // const weatherIcon2 = data.weather[0].icon;
+    // weatherIconImg.src = `http://openweathermap.org/img/w/${weatherIcon2}.png`;
+    // weatherIconImg.alt = `${data.weather[0].main}`;
 
+    city.value = `${data.name}`;
     temperature.textContent = `${Math.round(data.main.temp)}°C`;
     weatherDescription.textContent = data.weather[0].description;
     feelsLike.textContent = `feels like: ${Math.round(data.main.feels_like)}°C`;
     wind.textContent = `Wind speed: ${Math.round(data.wind.speed)} m/s`;
     humidity.textContent = `Humidity: ${data.main.humidity}%`;
-    // sunrise.textContent = `Sunrise: ${data.sys.sunrise}`;
-    // city.value = `${data.name}`;
-
-    // console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
-    // city.addEventListener('change', getWeather);
 }
-getWeather();
 
-city.addEventListener('change', getWeather);
+city.addEventListener('change', loadWeather);
 
-// getWeather('hoboken');
+if (weatherBlock) {
+    loadWeather();
+}
 
-// city.addEventListener('change', () => {
-//     // console.log(city.value);
-//     getWeather(city.value);
-// });
+// LocalStorage City
+
+function setLocalStorageCity() {
+    localStorage.setItem('weather__city', city.value);
+}
+window.addEventListener('beforeunload', setLocalStorageCity);
+
+function getLocalStorageCity() {
+    if (localStorage.getItem('weather__city')) {
+        city.value = localStorage.getItem('weather__city');
+        loadWeather();
+    }
+}
+window.addEventListener('load', getLocalStorageCity);
+
 
 
 // player  -----------------------------------------------------------------------
@@ -436,20 +439,37 @@ toDoInput.placeholder = 'add your new task';
 // });
 
 btnToDo.addEventListener('click', () => {
-    toDoPopup.classList.toggle('hidden');
+    toDoPopup.classList.toggle('popup__to-do_activ');
 });
 
 window.addEventListener('click', (e) => {
     if (!toDoPopup.contains(e.target) && !btnToDo.contains(e.target)) {
-        toDoPopup.classList.add('hidden');
+        toDoPopup.classList.remove('popup__to-do_activ');
     }
-  });
+});
 
 toDoBtnAdd.addEventListener('click', () => {
+
     const li = document.createElement('li');
     li.classList.add('to-do__li');
     li.textContent = toDoInput.value;
     toDoList.append(li);
+
+    const btns = document.createElement('span');
+    btns.classList.add('btns');
+    li.append(btns);
+    const btnEdit = document.createElement('button');
+    btnEdit.classList.add('btn__edit');
+    btnEdit.textContent = '/';
+    btns.append(btnEdit);
+    const btnDelete = document.createElement('button');
+    btnDelete.classList.add('btn__delete');
+    btnDelete.textContent = 'X';
+    btns.append(btnDelete);
+
+    btnDelete.addEventListener('click', () => {
+        li.classList.add('hidden');
+    });
 });
 
 // toDoInput.placeholder = 'add your new task';
@@ -473,15 +493,15 @@ const settingsBtn = document.querySelector('.settings__btn');
 const settingsPopup = document.querySelector('.settings__popup');
 
 settingsBtn.addEventListener('click', () => {
-    settingsPopup.classList.toggle('hidden');
+    settingsPopup.classList.toggle('popup__settings_activ');
     // settingsPopup.classList.add('_active');
 });
 
 window.addEventListener('click', (e) => {
     if (!settingsPopup.contains(e.target) && !settingsBtn.contains(e.target)) {
-        settingsPopup.classList.add('hidden');
+        settingsPopup.classList.remove('popup__settings_activ');
     }
-  });
+});
 
 // document.addEventListener('click', (e) => {
 // const click = e.composedPath().includes(settingsPopup);
@@ -504,36 +524,62 @@ const blocks = document.querySelectorAll('.block');
 const checkboxs = document.querySelectorAll('.checkbox');
 const blockTitles = document.querySelectorAll('.block__title');
 
-blockTitles.forEach((item, index) => {
+checkboxs.forEach((item, index) => {
 
     item.addEventListener('click', () => {
 
-        if (item.id === 'label-player') {
-            player.classList.toggle('_no-checked'); 
-        }
+        // if (item.id === 'label-player') {
+        //     player.classList.toggle('_no-checked');
+        // }
 
-        if (item.id === 'label-weather') {
-            weather.classList.toggle('_no-checked'); 
-        }
+        // if (item.id === 'label-weather') {
+        //     weatherBlock.classList.toggle('_no-checked');
+        // }
 
-        if (item.id === 'label-time') {
-            time.classList.toggle('_no-checked'); 
-        }
+        // if (item.id === 'label-time') {
+        //     time.classList.toggle('_no-checked');
+        // }
 
-        if (item.id === 'label-date') {
-            day.classList.toggle('_no-checked'); 
-        }
+        // if (item.id === 'label-date') {
+        //     day.classList.toggle('_no-checked');
+        // }
 
-        if (item.id === 'label-greeting') {
-            greetingContainer.classList.toggle('_no-checked'); 
-        }
+        // if (item.id === 'label-greeting') {
+        //     greetingContainer.classList.toggle('_no-checked');
+        // }
 
-        if (item.id === 'label-quote') {
-            footerQuote.classList.toggle('_no-checked'); 
-        }
+        // if (item.id === 'label-quote') {
+        //     footerQuote.classList.toggle('_no-checked');
+        // }
 
-        if (item.id === 'label-to-do-list') {
-            btnToDo.classList.toggle('_no-checked'); 
+        // if (item.id === 'label-to-do-list') {
+        //     btnToDo.classList.toggle('_no-checked');
+        // }
+
+        switch (item.id) {
+            case 'checkbox-player':
+                player.classList.toggle('_no-checked');
+                break;
+            case 'checkbox-weather':
+                weatherBlock.classList.toggle('_no-checked');
+                break;
+            case 'checkbox-time':
+                time.classList.toggle('_no-checked');
+                break;
+            case 'checkbox-date':
+                day.classList.toggle('_no-checked');
+                break;
+            case 'checkbox-greeting':
+                greetingContainer.classList.toggle('_no-checked');
+                break;
+            case 'checkbox-quote':
+                footerQuote.classList.toggle('_no-checked');
+                break;
+            case 'checkbox-to-do-list':
+                btnToDo.classList.toggle('_no-checked');
+                break;
+            default:
+                alert("Error");
         }
 
     });
